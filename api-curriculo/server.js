@@ -2,22 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const curriculoRoutes = require('./routes/curriculo');
-const { Sequelize } = require('sequelize');
-
-// Configuração do Sequelize
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
-  protocol: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false // Para evitar problemas de certificados não verificados
-    }
-  }
-});
+const sequelize = require('./config/sequelize'); // Importa a configuração do Sequelize
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Porta definida pelo Render
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
