@@ -1,15 +1,14 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config(); // Carregar as variáveis de ambiente do .env
 
-// Criando a instância do Sequelize
-const sequelize = new Sequelize(
-  process.env.DB_NAME, // nome do banco
-  process.env.DB_USER, // usuário
-  process.env.DB_PASSWORD, // senha
-  {
-    host: process.env.DB_HOST, // localhost ou outro host
-    dialect: 'postgres' // ou o tipo do banco de dados que está utilizando
-  }
-);
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres',
+  protocol: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false, // Necessário para conexões no Render
+    },
+  },
+});
 
 module.exports = sequelize;
