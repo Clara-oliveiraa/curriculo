@@ -22,35 +22,51 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Atualizar informações no currículo (PUT)
+// Atualizar um currículo existente (PUT)
 router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { descricao } = req.body;
+
   try {
-    const { id } = req.params;
-    const [updated] = await Curriculo.update(req.body, { where: { id } });
-    if (updated) {
-      const updatedCurriculo = await Curriculo.findByPk(id);
-      res.json(updatedCurriculo);
-    } else {
-      res.status(404).json({ error: 'Currículo não encontrado.' });
+    // Busca o currículo pelo ID
+    const curriculo = await Curriculo.findByPk(id);
+
+    if (!curriculo) {
+      return res.status(404).json({ error: 'Currículo não encontrado.' });
     }
+
+    // Atualiza o currículo
+    curriculo.descricao = descricao;
+    await curriculo.save();
+
+    return res.json(curriculo); // Retorna o currículo atualizado
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao atualizar o currículo.' });
+    console.error('Erro ao atualizar currículo:', error);
+    return res.status(500).json({ error: 'Erro ao atualizar currículo' });
   }
 });
 
-// Excluir informações no currículo (DELETE)
+module.exports = router;
+
+// Excluir um currículo existente (DELETE)
 router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const { id } = req.params;
-    const deleted = await Curriculo.destroy({ where: { id } });
-    if (deleted) {
-      res.status(204).send(); // Sucesso sem conteúdo
-    } else {
-      res.status(404).json({ error: 'Currículo não encontrado.' });
+    const curriculo = await Curriculo.findByPk(id);
+
+    if (!curriculo) {
+      return res.status(404).json({ error: 'Currículo não encontrado.' });
     }
+
+    await curriculo.destroy(); // Deleta o currículo
+
+    return res.status(200).json({ message: 'Currículo excluído com sucesso.' });
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao excluir o currículo.' });
+    console.error('Erro ao excluir currículo:', error);
+    return res.status(500).json({ error: 'Erro ao excluir currículo' });
   }
 });
+
 
 module.exports = router;
