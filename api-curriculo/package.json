@@ -12,12 +12,19 @@
   "dependencies": {
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.5",
-    "express": "^4.21.1",
+    "express": "^4.17.1",,
     "pg": "^8.13.1",
-    "sequelize": "^6.37.5",
+   "sequelize": "^6.3.5",
     "sequelize-cli": "^6.6.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
+
+
+     "start": "node server.js",  // ou o comando que você usa para rodar o seu servidor
+    "dev": "nodemon server.js"  // caso você queira rodar em modo de desenvolvimento
+  
   }
 }
+
+   
