@@ -22,7 +22,6 @@
 
 
      "start": "node server.js",  // ou o comando que você usa para rodar o seu servidor
-    "dev": "nodemon server.js"  // caso você queira rodar em modo de desenvolvimento
   
   }
 }
